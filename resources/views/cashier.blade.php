@@ -1,15 +1,59 @@
+<?php
+$total = 0; ?>
 @extends('layouts.app')
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 text-center">
-                <form action="/add_to_buy" method="POST">
+    <div class="container mt-3">
+        <div class="row mb-5">
+            <div class="col-md-12 text-center">
+                <form action="/add_to_buy" method="POST" class='form-control'>
                     @csrf
-                    <select class="livesearch form-control" name="livesearch" required></select>
-                    <br><br>
-                    <button class="btn btn-outline-success" type="submit">Add</button>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <select class="livesearch form-control" name="livesearch" required></select>
+                        </div>
+                        <div class="col-md-1">
+                            <label for="exampleInputEmail1" class="form-label">Quantity: </label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                                placeholder="0" name="quantity" required>
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-outline-success" type="submit">Add</button>
+                        </div>
+                    </div>
                 </form>
             </div>
+        </div>
+        <div class="row">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <td>Name</td>
+                        <td>Price</td>
+                        <td>Quantity</td>
+                        <td>Total</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($products as $item)
+                        <tr>
+                            <td>{{ $item->name }}</td>
+                            <td>Rp. {{ number_format($item->price) }}</td>
+                            <td>{{ $item->buys_quantity }}</td>
+                            <td>Rp. {{ number_format($item->buys_price) }}</td>
+                            <input type="hidden" name="total_price" value="{{ $total += $item->buys_price }}">
+                        </tr>
+                    @endforeach
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Rp. {{ number_format($total) }} </td>
+                    </tr>
+                </tbody>
+            </table>
+
 
         </div>
     </div>

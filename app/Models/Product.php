@@ -15,7 +15,7 @@ class Product extends Model
         'stocks',
         'upc',
         'gallery',
-        'value'
+        'value',
     ];
     protected $guarded = [];
 }

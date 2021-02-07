@@ -57,7 +57,18 @@ class ProductController extends Controller
         if (Auth::guest()) {
             return redirect('/login');
         } else {
-            return view('cashier');
+            $userId = Auth::user()->id;
+            // this join data from other table to display first is the main table which is buys
+            $products = DB::table('buys')
+                // join this table with products table where the product id is same as product id in buys to take the necessary product only
+                ->join('products', 'buys.product_id', '=', 'products.id')
+                // make sure the user id is the same as user account
+                ->where('buys.user_id', $userId)
+                // take all products in the table, on buys table take buys id as the new name, quantity and the price of product
+                ->select('products.*', 'buys.id as buys_id', 'buys.quantity as buys_quantity', 'buys.price as buys_price')
+                // get function to take all into object and pass to the view
+                ->get();
+            return view('cashier', ['products' => $products]);
         }
     }
     public function search(Request $request)
@@ -67,6 +78,7 @@ class ProductController extends Controller
             $search = $request->q;
             $name = Product::select("id", "name")
                 ->where('name', 'LIKE', "%$search%")
+                ->orWhere('upc', 'LIKE', "%$search%")
                 ->get();
         }
         return response()->json($name);
@@ -76,14 +88,24 @@ class ProductController extends Controller
         if (Auth::guest()) {
             return redirect('/login');
         } else {
-            // everytime the user hit addtobuy then create new class buy
-            $cart = new Buy;
+            // to take the product price as an array of price
+            $productPrice = Product::where('id', $request->livesearch)->get("price");
+            // always die dump data to make sure take the correct data
+            //dd($request);
+            //dd($productPrice[0]->price);
+            // everytime the user hit addtobuy then create new object buy
+            $buy = new Buy;
             // take the user id from the session
-            $cart->user_id = Auth::user()->id;
-            $cart->product_id = $request->livesearch;
+            $buy->user_id = Auth::user()->id;
+            // from livesearch this take the product id as selected
+            $buy->product_id = $request->livesearch;
+            // quantity from post request
+            $buy->quantity = $request->quantity;
+            // count the price by price x quantity
+            $buy->price = $request->quantity * $productPrice[0]->price;
             // save to the database buys
-            $cart->save();
-            return redirect('/');
+            $buy->save();
+            return redirect('/cashier');
         }
     }
 }

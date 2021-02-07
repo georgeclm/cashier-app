@@ -67,15 +67,11 @@
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     {{ Auth::user()->name }}
-                                    {{-- {{ Session::get('user')['name'] }} --}}
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    {{-- <li>
-                                        <hr class="dropdown-divider">
-                                    </li> --}}
                                     <li> <a class="dropdown-item" href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
-                                                                                                                    document.getElementById('logout-form').submit();">
+                                                                                                                                document.getElementById('logout-form').submit();">
                                             {{ __('Logout') }}
                                         </a>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"
@@ -137,7 +133,7 @@
 </body>
 <script type="text/javascript">
     $('.livesearch').select2({
-        placeholder: 'Select Product Name',
+        placeholder: 'Select Product Name or UPC Number',
         ajax: {
             url: '/search',
             dataType: 'json',

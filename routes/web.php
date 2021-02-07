@@ -20,12 +20,11 @@ Route::get("/", [ProductController::class, 'index']);
 Route::get("/product/create", [ProductController::class, 'create']);
 // set post route to save the product
 Route::post("/product", [ProductController::class, 'store']);
-
+// set get route to show the cashier view
 Route::get("/cashier", [ProductController::class, 'cashier']);
-
+// for the search route from the ajax search script and return the name
 Route::get("/search", [ProductController::class, 'search']);
-
+// the post from the form to store the name data to the Buy table
 Route::post("/add_to_buy", [ProductController::class, 'addToBuy']);
-
-
+// for the authentication from laravel
 Auth::routes();

@@ -17,6 +17,8 @@ class CreateBuysTable extends Migration
             $table->id();
             $table->string('product_id');
             $table->integer('user_id');
+            $table->integer('quantity');
+            $table->integer('price');
             $table->timestamps();
             $table->index(['product_id', 'user_id']);
         });
