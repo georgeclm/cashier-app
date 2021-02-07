@@ -21,6 +21,11 @@ Route::get("/product/create", [ProductController::class, 'create']);
 // set post route to save the product
 Route::post("/product", [ProductController::class, 'store']);
 
-Auth::routes();
+Route::get("/cashier", [ProductController::class, 'cashier']);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get("/search", [ProductController::class, 'search']);
+
+Route::post("/add_to_buy", [ProductController::class, 'addToBuy']);
+
+
+Auth::routes();

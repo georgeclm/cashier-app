@@ -22,6 +22,14 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+
+    <!--ajax search here-->
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 </head>
 
 <body>
@@ -41,9 +49,12 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/">Home</a>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a class="nav-link" href="/myorders">Orders</a>
-                        </li> --}}
+                        @guest
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="/cashier">Cashier</a>
+                            </li>
+                        @endguest
                     </ul>
 
                     <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
@@ -64,7 +75,7 @@
                                     </li> --}}
                                     <li> <a class="dropdown-item" href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
-                                                                                document.getElementById('logout-form').submit();">
+                                                                                                                    document.getElementById('logout-form').submit();">
                                             {{ __('Logout') }}
                                         </a>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"
@@ -124,6 +135,28 @@
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">
     </script>
 </body>
+<script type="text/javascript">
+    $('.livesearch').select2({
+        placeholder: 'Select Product Name',
+        ajax: {
+            url: '/search',
+            dataType: 'json',
+            delay: 250,
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(item) {
+                        return {
+                            text: item.name,
+                            id: item.id
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
+
+</script>
 <style>
     .link-web a {
         color: #000;
@@ -136,6 +169,10 @@
         border-bottom: 0px;
         color: #646786;
 
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block;
     }
 
 </style>

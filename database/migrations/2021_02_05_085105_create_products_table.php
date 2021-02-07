@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('price');
             $table->string('category');
             $table->string('stocks');
+            $table->string('value');
             $table->string('upc')->unique();
             $table->string('gallery');
             $table->timestamps();
