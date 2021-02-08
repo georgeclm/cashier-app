@@ -56,34 +56,30 @@
                             </li>
                         @endguest
                     </ul>
+                    @guest
+                        <span class="">
+                            <a class="btn btn-outline-success" href="/login">Login</a>
+                        </span>
+                    @else
+                        <span class="dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ Auth::user()->name }}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li> <a class="dropdown-item" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                                                                                                                                document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </li>
+                            </ul>
+                        </span>
 
-                    <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="/login">Login</a>
-                            </li>
-                        @else
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    {{ Auth::user()->name }}
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li> <a class="dropdown-item" href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                                                                                                document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }}
-                                        </a>
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                            class="d-none">
-                                            @csrf
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-
-                        @endguest
-                    </ul>
+                    @endguest
                 </div>
             </div>
         </nav>
