@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Finish;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,8 +16,13 @@ class FinishController extends Controller
     }
     static function userProfit()
     {
-        $profit = Finish::where('user_id', Auth::user()->id)
+        $profit1 = Finish::where('user_id', Auth::user()->id)
             ->sum('total');
-        return $profit;
+        return $profit1;
+    }
+    static function targetContribution()
+    {
+        $target = 100 / User::count();
+        return $target;
     }
 }

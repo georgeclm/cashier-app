@@ -5,10 +5,16 @@
 <?php
 $value = 0;
 $userSales = 0;
+$participation = 0;
+$target = 0;
 use App\Http\Controllers\FinishController;
 $totalSales = FinishController::totalProfit();
-if (Session::has('user')) {
+if (Auth::user()) {
 $userSales = FinishController::userProfit();
+$target = FinishController::targetContribution();
+if ($userSales != 0) {
+$participation = ($userSales / $totalSales) * 100;
+}
 }
 ?>
 @extends('layouts.app')
@@ -56,7 +62,15 @@ $userSales = FinishController::userProfit();
                                     <td>Your Sales</td>
                                     <td>Rp. {{ number_format($userSales) }}</td>
                                 </tr>
+                                <tr>
+                                    <td>Your Target Contribution</td>
+                                    <td>{{ number_format($target, 2) }} %</td>
+                                </tr>
 
+                                <tr>
+                                    <td>Your Contribution</td>
+                                    <td>{{ number_format($participation, 2) }} %</td>
+                                </tr>
                             @endguest
 
                         </tbody>
