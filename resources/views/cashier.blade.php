@@ -33,6 +33,7 @@ $total = 0; ?>
                         <td>Price</td>
                         <td>Quantity</td>
                         <td>Total</td>
+                        <td></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,6 +44,7 @@ $total = 0; ?>
                             <td>{{ $item->buys_quantity }}</td>
                             <td>Rp. {{ number_format($item->buys_price) }}</td>
                             <input type="hidden" name="total_price" value="{{ $total += $item->buys_price }}">
+                            <td><a href="/removebuy/{{ $item->buys_id }}" class="btn btn-outline-danger">Remove</a></td>
                         </tr>
                     @endforeach
                     <tr>
@@ -50,10 +52,16 @@ $total = 0; ?>
                         <td></td>
                         <td></td>
                         <td>Rp. {{ number_format($total) }} </td>
-                    </tr>
                 </tbody>
             </table>
+            <div class="row">
+                <form action="checkout" method="POST">
+                    @csrf
+                    <input type="hidden" name="total_price" value="{{ $total }}">
+                    <button class="btn btn-outline-dark" type="submit">Checkout</button>
+                </form>
 
+            </div>
 
         </div>
     </div>

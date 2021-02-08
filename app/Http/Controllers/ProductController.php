@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Buy;
+use App\Models\Finish;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -41,16 +42,10 @@ class ProductController extends Controller
             "stocks" => $request->get('stocks'),
             "upc" => $request->get('upc'),
             "gallery" => $request->file('gallery')->hashName(),
-            "value" => $request->get('price') * $request->get('stocks')
+            // "value" => $request->get('price') * $request->get('stocks')
         ]);
         $product->save(); // Finally, save the record.
         return redirect('/');
-    }
-    static function productValue()
-    {
-        $total = DB::table('products')
-            ->sum('value');
-        return $total;
     }
     public function cashier()
     {
@@ -105,6 +100,44 @@ class ProductController extends Controller
             $buy->price = $request->quantity * $productPrice[0]->price;
             // save to the database buys
             $buy->save();
+            return redirect('/cashier');
+        }
+    }
+    public function removeBuy($id)
+    {
+        Buy::destroy($id);
+        return redirect('/cashier');
+    }
+    public function checkout(Request $request)
+    {
+        if (Auth::guest()) {
+            return redirect('/login');
+        } else {
+            $total = $request->total_price;
+            return view('checkout', ['total' => $total]);
+        }
+    }
+    public function checkoutPlace(Request $request)
+    {
+        if (Auth::guest()) {
+            return redirect('/login');
+        } else {
+
+            $userId = Auth::user()->id;
+            $allBuy = Buy::where('user_id', $userId)->get();
+            foreach ($allBuy as $buy) {
+                $thestock = Product::where('id', $buy['product_id'])->get();
+                $data = [
+                    'stocks' => $thestock[0]->stocks - $buy['quantity'],
+                ];
+                Product::where('id', $buy['product_id'])->update($data);
+                Buy::where('user_id', $userId)->delete();
+            };
+            $finish = new Finish;
+            $finish->user_id = $userId;
+            $finish->payment_method = $request->payment;
+            $finish->total = $request->total;
+            $finish->save();
             return redirect('/cashier');
         }
     }

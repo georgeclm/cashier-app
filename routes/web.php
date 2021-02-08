@@ -26,5 +26,15 @@ Route::get("/cashier", [ProductController::class, 'cashier']);
 Route::get("/search", [ProductController::class, 'search']);
 // the post from the form to store the name data to the Buy table
 Route::post("/add_to_buy", [ProductController::class, 'addToBuy']);
+
+Route::get("removebuy/{id}", [ProductController::class, 'removeBuy']);
+
+Route::post("checkout", [ProductController::class, 'checkout']);
+
+Route::post("checkoutplace", [ProductController::class, 'checkoutPlace']);
+
+
+
+
 // for the authentication from laravel
 Auth::routes();
