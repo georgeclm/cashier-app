@@ -2,7 +2,15 @@
     to pass the total value from the function inside the controller and take
     the total value to displayfor the template from app and content to add product
     and the other --}}
-<?php $value = 0; ?>
+<?php
+$value = 0;
+$userSales = 0;
+use App\Http\Controllers\FinishController;
+$totalSales = FinishController::totalProfit();
+if (Session::has('user')) {
+$userSales = FinishController::userProfit();
+}
+?>
 @extends('layouts.app')
 
 @section('content')
@@ -38,6 +46,19 @@
                                 <td>Total Product Value</td>
                                 <td>Rp. {{ number_format($value) }}</td>
                             </tr>
+                            <tr>
+                                <td>Total Sales</td>
+                                <td>Rp. {{ number_format($totalSales) }}</td>
+                            </tr>
+                            @guest
+                            @else
+                                <tr>
+                                    <td>Your Sales</td>
+                                    <td>Rp. {{ number_format($userSales) }}</td>
+                                </tr>
+
+                            @endguest
+
                         </tbody>
                     </table>
 
