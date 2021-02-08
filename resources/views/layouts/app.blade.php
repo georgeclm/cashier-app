@@ -19,17 +19,17 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
 
     <!--ajax search here-->
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <!--cdn for dark theme-->
+
 </head>
 
 <body>
@@ -64,12 +64,12 @@
                         <span class="dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ Auth::user()->name }}
+                                <span class="text-dark"> {{ Auth::user()->name }}</span>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li> <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
-                                                                                                                                                                document.getElementById('logout-form').submit();">
+                                                                                                                                                                                                                    document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -97,8 +97,7 @@
                         <h3 class="text-uppercase">I'd love to hear from you</h3>
                         <div class="mt-5">
                             <a href="https://www.instagram.com/george_clm/" class="card-link" target="_blank"><img
-                                    src="{{ asset('img/instagram.png') }}"
-                                    style="width: 1.5rem; height: 1.5rem;"></a>
+                                    src="{{ asset('img/instagram.png') }}" style="width: 1.5rem; height: 1.5rem;"></a>
                             <a href="https://www.linkedin.com/in/epafroditus-george-5b66bb1b7/" class="card-link"
                                 target="_blank"><img src="{{ asset('img/linkedin.png') }}"
                                     style="width: 1.5rem; height: 1.5rem;"></a>

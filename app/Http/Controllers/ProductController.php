@@ -45,7 +45,7 @@ class ProductController extends Controller
             // "value" => $request->get('price') * $request->get('stocks')
         ]);
         $product->save(); // Finally, save the record.
-        return redirect('/');
+        return redirect('/')->with('success', 'Success Product Have Been Added');
     }
     public function cashier()
     {
@@ -100,13 +100,13 @@ class ProductController extends Controller
             $buy->price = $request->quantity * $productPrice[0]->price;
             // save to the database buys
             $buy->save();
-            return redirect('/cashier');
+            return redirect('/cashier')->with('success', 'Product Added');
         }
     }
     public function removeBuy($id)
     {
         Buy::destroy($id);
-        return redirect('/cashier');
+        return redirect('/cashier')->withErrors(['Product have been removed', 'GG Error ']);
     }
     public function checkout(Request $request)
     {
@@ -127,18 +127,22 @@ class ProductController extends Controller
             $allBuy = Buy::where('user_id', $userId)->get();
             foreach ($allBuy as $buy) {
                 $thestock = Product::where('id', $buy['product_id'])->get();
-                $data = [
-                    'stocks' => $thestock[0]->stocks - $buy['quantity'],
-                ];
-                Product::where('id', $buy['product_id'])->update($data);
-                Buy::where('user_id', $userId)->delete();
+                if ($thestock[0]->stocks > $buy['quantity']) {
+                    $data = [
+                        'stocks' => $thestock[0]->stocks - $buy['quantity'],
+                    ];
+                    Product::where('id', $buy['product_id'])->update($data);
+                    Buy::where('user_id', $userId)->delete();
+                } else {
+                    return redirect('/cashier')->withErrors(['The Quantity Exceed Product Stocks', 'GG Error ']);
+                }
             };
             $finish = new Finish;
             $finish->user_id = $userId;
             $finish->payment_method = $request->payment;
             $finish->total = $request->total;
             $finish->save();
-            return redirect('/cashier');
+            return redirect('/cashier')->with('success', 'Buy Have Been Placed');
         }
     }
 }

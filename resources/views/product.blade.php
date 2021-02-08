@@ -3,12 +3,14 @@
     the total value to displayfor the template from app and content to add product
     and the other --}}
 <?php
+use App\Http\Controllers\FinishController;
 $value = 0;
 $userSales = 0;
 $participation = 0;
 $target = 0;
-use App\Http\Controllers\FinishController;
+$todaySales = 0;
 $totalSales = FinishController::totalProfit();
+$todaySales = FinishController::todaySales();
 if (Auth::user()) {
 $userSales = FinishController::userProfit();
 $target = FinishController::targetContribution();
@@ -20,10 +22,26 @@ $participation = ($userSales / $totalSales) * 100;
 @extends('layouts.app')
 
 @section('content')
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                <h6>{{ $errors->first() }}</h6>
+            </ul>
+        </div>
+    @endif
+
+    @if (\Session::has('success'))
+        <div class="alert alert-success">
+            <ul>
+                <h6>{!! \Session::get('success') !!}</h6>
+            </ul>
+        </div>
+    @endif
+
     <div class="container mb-5">
         <div class="col-md-12">
             <h3 class='mb-4'>Products</h3>
-            <a href="/product/create" class="btn btn-outline-success mb-3">Add Product</a>
+            <a href="/product/create" class="btn btn-outline-secondary mb-3">Add Product</a>
             <div class="row">
                 <div class="col-md-8">
                     <div class="row row-cols-1 row-cols-md-4">
@@ -56,6 +74,11 @@ $participation = ($userSales / $totalSales) * 100;
                                 <td>Total Sales</td>
                                 <td>Rp. {{ number_format($totalSales) }}</td>
                             </tr>
+                            <tr>
+                                <td>Today Sales</td>
+                                <td>Rp. {{ number_format($todaySales) }}</td>
+                            </tr>
+
                             @guest
                             @else
                                 <tr>

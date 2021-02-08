@@ -23,11 +23,14 @@ $tax = $total * 0.1; ?>
             <div>
                 <form action="/checkoutplace" method="POST">
                     @csrf
-                    <div class="form-group">
+                    <div class="form-check">
                         <label for="pwd">Payment Method:</label> <br><br>
-                        <input type="radio" value="cash" name="payment" id=""><span> Cash</span> <br><br>
-                        <input type="radio" value="cash" name="payment" id=""><span> Credit Card</span><br><br>
-                        <input type="radio" value="cash" name="payment" id=""><span> Debit</span> <br><br>
+                        <input class="form-check-input" type="radio" value="Cash" name="payment" id=""><span> Cash</span>
+                        <br><br>
+                        <input class="form-check-input" type="radio" value="Credit Card" name="payment" id=""><span> Credit
+                            Card</span><br><br>
+                        <input class="form-check-input" type="radio" value="Debit" name="payment" id=""><span> Debit</span>
+                        <br><br>
                     </div>
                     <input type="hidden" name="total" value="{{ $total + $tax }}">
                     <button type="submit" class="btn btn-outline-success">Pay</button>

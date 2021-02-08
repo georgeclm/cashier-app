@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Validation\Rule;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +34,6 @@ Route::get("removebuy/{id}", [ProductController::class, 'removeBuy']);
 Route::post("checkout", [ProductController::class, 'checkout']);
 
 Route::post("checkoutplace", [ProductController::class, 'checkoutPlace']);
-
 
 
 

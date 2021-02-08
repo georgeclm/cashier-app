@@ -2,6 +2,21 @@
 $total = 0; ?>
 @extends('layouts.app')
 @section('content')
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                <h6>{{ $errors->first() }}</h6>
+            </ul>
+        </div>
+    @endif
+
+    @if (\Session::has('success'))
+        <div class="alert alert-success">
+            <ul>
+                <h6>{!! \Session::get('success') !!}</h6>
+            </ul>
+        </div>
+    @endif
     <div class="container mt-3">
         <div class="row mb-5">
             <div class="col-md-12 text-center">
@@ -47,21 +62,29 @@ $total = 0; ?>
                             <td><a href="/removebuy/{{ $item->buys_id }}" class="btn btn-outline-danger">Remove</a></td>
                         </tr>
                     @endforeach
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>Rp. {{ number_format($total) }} </td>
+                    @if ($total != 0)
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Rp. {{ number_format($total) }} </td>
+                            <td></td>
+                        </tr>
+                    @endif
+
                 </tbody>
             </table>
-            <div class="row">
-                <form action="checkout" method="POST">
-                    @csrf
-                    <input type="hidden" name="total_price" value="{{ $total }}">
-                    <button class="btn btn-outline-dark" type="submit">Checkout</button>
-                </form>
+            @if ($total != 0)
+                <div class="row">
+                    <form action="checkout" method="POST">
+                        @csrf
+                        <input type="hidden" name="total_price" value="{{ $total }}">
+                        <button class="btn btn-outline-dark" type="submit">Checkout</button>
+                    </form>
 
-            </div>
+                </div>
+
+            @endif
 
         </div>
     </div>
