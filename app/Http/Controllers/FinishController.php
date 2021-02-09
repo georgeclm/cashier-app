@@ -6,9 +6,32 @@ use App\Models\Finish;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class FinishController extends Controller
 {
+    public function index()
+    {
+        if (Auth::guest()) {
+            return redirect('/login');
+        } else {
+            $userId = Auth::user()->id;
+            $finishes = DB::table('finishes')
+                //->join('products', 'finishes.product_id', '=', 'products.id')
+                ->get();
+            return view('history', ['finishes' => $finishes]);
+        }
+    }
+    static function hasFinish()
+    {
+        $userId = Auth::user()->id;
+        $data = Finish::where('user_id', $userId)->count();
+        if ($data == 0) {
+            return 'yes';
+        } else {
+            return 'no';
+        }
+    }
     static function totalProfit()
     {
         $profit = Finish::sum('total');
