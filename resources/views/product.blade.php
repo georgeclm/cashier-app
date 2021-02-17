@@ -67,7 +67,7 @@ $participation = ($userSales / $totalSales) * 100;
                     <table class="table table-hover">
                         <tbody>
                             <tr>
-                                <td>Total Product Value</td>
+                                <td>Gross Merchandise Value (GMV)</td>
                                 <td>Rp. {{ number_format($value) }}</td>
                             </tr>
                             <tr>

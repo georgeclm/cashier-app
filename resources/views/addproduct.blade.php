@@ -23,8 +23,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Price of Product</label>
-                        <input type="number" name="price" class="form-control" id="exampleInputEmail1"
-                            aria-describedby="emailHelp" placeholder="0" required>
+                        <input type="number" name="price" class="form-control" aria-describedby="emailHelp" required
+                            placeholder="Rp.1,000,000.00">
                     </div>
 
                     <div class="mb-3">

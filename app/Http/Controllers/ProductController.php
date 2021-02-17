@@ -31,7 +31,7 @@ class ProductController extends Controller
         ]);
         if ($request->hasFile('gallery')) {
             $request->validate([
-                'gallery' => 'mimes:jpeg,bmp,png' // Only allow .jpg, .bmp and .png file types.
+                'gallery' => 'mimes:jpeg,bmp,png,jpg' // Only allow .jpg, .bmp and .png file types.
             ]);
         }
         $request->file('gallery')->store('product', 'public');
@@ -122,7 +122,6 @@ class ProductController extends Controller
         if (Auth::guest()) {
             return redirect('/login');
         } else {
-
             $userId = Auth::user()->id;
             $allBuy = Buy::where('user_id', $userId)->get();
             foreach ($allBuy as $buy) {
