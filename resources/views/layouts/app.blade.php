@@ -55,38 +55,7 @@
             @yield('content')
         </main>
         <br><br><br><br><br><br><br><br>
-
-        <footer class="bg-light text-center text-lg-start mt-5">
-            <div class="container p-4">
-                <div class="row">
-                    <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-                        <h3 class="text-uppercase">I'd love to hear from you</h3>
-                        <div class="mt-5">
-                            <a href="https://www.instagram.com/george_clm/" class="card-link" target="_blank"><img
-                                    src="{{ asset('img/instagram.png') }}" style="width: 1.5rem; height: 1.5rem;"></a>
-                            <a href="https://www.linkedin.com/in/epafroditus-george-5b66bb1b7/" class="card-link"
-                                target="_blank"><img src="{{ asset('img/linkedin.png') }}"
-                                    style="width: 1.5rem; height: 1.5rem;"></a>
-                            <a href="https://github.com/georgeclm" class="card-link" target="_blank"><img
-                                    src="{{ asset('img/github.png') }}" style="width: 1.5rem; height: 1.5rem;"></a>
-                            <a href="https://api.whatsapp.com/send/?phone=6289647590083&text&app_absent=0"
-                                class="card-link" target="_blank"><img src="{{ asset('img/whatsapp.png') }}"
-                                    style="width: 1.5rem; height: 1.5rem;"></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-                        <h5 class="text-uppercase">cavidjaja@gmail.com</h5>
-                        <h5 class="text-uppercase mb-4">089647590083</h5>
-                        <a class="btn btn-outline-dark btn-lg"
-                            href="https://doc-0s-80-docs.googleusercontent.com/docs/securesc/0afulek9pr47gebntkhni3ms50h67n2n/epnian97836aujsgr7lbueg2e3utvod3/1611895950000/02063670884804000626/02063670884804000626/1BcKbeBN2NzoaNtAGuQS1UjZn31LYtVr5?e=download&authuser=0&nonce=9aq8jm713dgl0&user=02063670884804000626&hash=4t23gdd87a4rfd6gk1hg8a5ds77hokq8"
-                            target="_blank">Download CV</a>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
-                © 2021 By Epafroditus George
-            </div>
-        </footer>
+        <x-footer />
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">

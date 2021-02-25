@@ -12,15 +12,18 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                        <a class="nav-link @if ($home) active @endif"
+                            aria-current="page" href="/">Home</a>
                     </li>
                     @guest
                     @else
                         <li class="nav-item">
-                            <a class="nav-link" href="/cashier">Cashier</a>
+                            <a class="nav-link @if ($cashier) active @endif"
+                                href="/cashier">Cashier</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/history">History</a>
+                            <a class="nav-link @if ($history) active @endif"
+                                href="/history">History</a>
                         </li>
                     @endguest
                 </ul>
@@ -37,7 +40,7 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li> <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
-                                                                                                                                                                                                                                        document.getElementById('logout-form').submit();">
+                                                                                                                                                                                                                                                        document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
                                 </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
