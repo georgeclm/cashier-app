@@ -5,10 +5,12 @@
 <?php
 use App\Http\Controllers\FinishController;
 $value = 0;
+$balance = 0;
 $userSales = 0;
 $participation = 0;
 $target = 0;
 $todaySales = 0;
+$totalQuantity = FinishController::totalQuantity();
 $totalSales = FinishController::totalProfit();
 $todaySales = FinishController::todaySales();
 if (Auth::user()) {
@@ -78,9 +80,22 @@ $participation = ($userSales / $totalSales) * 100;
                                 <td>Today Sales</td>
                                 <td>Rp. {{ number_format($todaySales) }}</td>
                             </tr>
+                            <input type="hidden" value="{{ $balance = $totalSales - $value }}">
+                            <tr>
+                                <td>Balance Sheet</td>
+                                <td>Rp. {{ number_format($balance) }}</td>
+                            </tr>
+                            <tr>
+                                <td>Total Product Sold</td>
+                                <td>{{ $totalQuantity }}</td>
+                            </tr>
 
-                            @guest
-                            @else
+                        </tbody>
+                    </table>
+                    @guest
+                    @else
+                        <table class="table table-hover">
+                            <tbody>
                                 <tr>
                                     <td>Your Sales</td>
                                     <td>Rp. {{ number_format($userSales) }}</td>
@@ -94,10 +109,12 @@ $participation = ($userSales / $totalSales) * 100;
                                     <td>Your Contribution</td>
                                     <td>{{ number_format($participation, 2) }} %</td>
                                 </tr>
-                            @endguest
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    @endguest
+
+
 
                 </div>
             </div>

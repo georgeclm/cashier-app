@@ -48,6 +48,11 @@ class FinishController extends Controller
         $target = 100 / User::count();
         return $target;
     }
+    static function totalQuantity()
+    {
+        $totalQuantity = Finish::sum('quantity');
+        return $totalQuantity;
+    }
     static function todaySales()
     {
         $allCreated = Finish::get();

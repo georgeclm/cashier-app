@@ -124,6 +124,7 @@ class ProductController extends Controller
         } else {
             $userId = Auth::user()->id;
             $allBuy = Buy::where('user_id', $userId)->get();
+            $totalQuantity = Buy::where('user_id', $userId)->sum('quantity');
             foreach ($allBuy as $buy) {
                 $thestock = Product::where('id', $buy['product_id'])->get();
                 if ($thestock[0]->stocks > $buy['quantity']) {
@@ -140,6 +141,7 @@ class ProductController extends Controller
             $finish->user_id = $userId;
             $finish->payment_method = $request->payment;
             $finish->total = $request->total;
+            $finish->quantity = $totalQuantity;
             $finish->save();
             return redirect('/cashier')->with('success', 'Buy Have Been Placed');
         }
