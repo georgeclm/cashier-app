@@ -18,6 +18,7 @@ class FinishController extends Controller
             $userId = Auth::user()->id;
             $finishes = DB::table('finishes')
                 //->join('products', 'finishes.product_id', '=', 'products.id')
+                ->orderByDesc('created_at')
                 ->get();
             return view('history', ['finishes' => $finishes]);
         }
@@ -52,6 +53,11 @@ class FinishController extends Controller
     {
         $totalQuantity = Finish::sum('quantity');
         return $totalQuantity;
+    }
+    static function averageQuantity()
+    {
+        $avgQuantity = Finish::average('quantity');
+        return $avgQuantity;
     }
     static function todaySales()
     {

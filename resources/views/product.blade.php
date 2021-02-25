@@ -11,6 +11,7 @@ $participation = 0;
 $target = 0;
 $todaySales = 0;
 $totalQuantity = FinishController::totalQuantity();
+$avgQuantity = FinishController::averageQuantity();
 $totalSales = FinishController::totalProfit();
 $todaySales = FinishController::todaySales();
 if (Auth::user()) {
@@ -89,6 +90,11 @@ $participation = ($userSales / $totalSales) * 100;
                                 <td>Total Product Sold</td>
                                 <td>{{ $totalQuantity }}</td>
                             </tr>
+                            <tr>
+                                <td>Average Basket Size</td>
+                                <td>{{ number_format($avgQuantity, 2) }}</td>
+                            </tr>
+
 
                         </tbody>
                     </table>

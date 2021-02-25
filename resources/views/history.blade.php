@@ -30,7 +30,9 @@ $totalSales = FinishController::totalProfit();
                             <tr>
                                 <td>Date</td>
                                 <td>Payment Method</td>
+                                <td>Quantity</td>
                                 <td>Total</td>
+
 
                             </tr>
                         </thead>
@@ -39,12 +41,16 @@ $totalSales = FinishController::totalProfit();
                                 <tr>
                                     <td>{{ substr($item->created_at, 0, 10) }}</td>
                                     <td>{{ $item->payment_method }}</td>
+                                    <td>{{ $item->quantity }}</td>
+
                                     <td>Rp. {{ number_format($item->total) }}</td>
                                 </tr>
                             @endforeach
                             <tr>
                                 <td></td>
                                 <td></td>
+                                <td></td>
+
                                 <td>Rp. {{ number_format($totalSales) }}</td>
 
                             </tr>
