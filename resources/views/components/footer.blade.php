@@ -20,9 +20,8 @@
                 <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
                     <h5 class="text-uppercase">cavidjaja@gmail.com</h5>
                     <h5 class="text-uppercase mb-4">089647590083</h5>
-                    <a class="btn btn-outline-dark btn-lg"
-                        href="https://doc-0s-80-docs.googleusercontent.com/docs/securesc/0afulek9pr47gebntkhni3ms50h67n2n/epnian97836aujsgr7lbueg2e3utvod3/1611895950000/02063670884804000626/02063670884804000626/1BcKbeBN2NzoaNtAGuQS1UjZn31LYtVr5?e=download&authuser=0&nonce=9aq8jm713dgl0&user=02063670884804000626&hash=4t23gdd87a4rfd6gk1hg8a5ds77hokq8"
-                        target="_blank">Download CV</a>
+                    <a class="btn btn-outline-dark btn-lg" href="https://georgeclm.github.io/" target="_blank">Visit My
+                        Website</a>
                 </div>
             </div>
         </div>
