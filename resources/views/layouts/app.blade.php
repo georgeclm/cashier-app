@@ -35,18 +35,17 @@
 <body>
     <div id="app">
         <x-header />
-        @if ($errors->any())
+        @if (session('error'))
             <div class="alert alert-danger">
                 <ul>
-                    <h6>{{ $errors->first() }}</h6>
+                    <h6>{{ session('error') }}</h6>
                 </ul>
             </div>
         @endif
-
-        @if (\Session::has('success'))
+        @if (session('success'))
             <div class="alert alert-success">
                 <ul>
-                    <h6>{!! \Session::get('success') !!}</h6>
+                    <h6>{{ session('success') }}</h6>
                 </ul>
             </div>
         @endif

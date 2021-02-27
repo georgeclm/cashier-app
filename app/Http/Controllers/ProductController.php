@@ -106,7 +106,7 @@ class ProductController extends Controller
     public function removeBuy($id)
     {
         Buy::destroy($id);
-        return redirect('/cashier')->withErrors(['Product have been removed', 'GG Error ']);
+        return redirect('/cashier')->with('error', 'Product have been removed');
     }
     public function checkout(Request $request)
     {
@@ -134,7 +134,7 @@ class ProductController extends Controller
                     Product::where('id', $buy['product_id'])->update($data);
                     Buy::where('user_id', $userId)->delete();
                 } else {
-                    return redirect('/cashier')->withErrors(['The Quantity Exceed Product Stocks', 'GG Error ']);
+                    return redirect('/cashier')->with('error', 'The Quantity Exceed Product Stocks');
                 }
             };
             $finish = new Finish;
