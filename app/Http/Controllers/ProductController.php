@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\Printer;
 use App\Models\Product;
 use App\Models\Buy;
 use App\Models\Finish;
@@ -9,6 +12,29 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
+class item
+{
+    private $name;
+    private $price;
+    private $dollarSign;
+
+    public function __construct($name = '', $price = '')
+    {
+        $this->name = $name;
+        $this->price = $price;
+    }
+
+    public function __toString()
+    {
+        $rightCols = 10;
+        $leftCols = 38;
+
+        $left = str_pad($this->name, $leftCols);
+
+        $right = str_pad($this->price, $rightCols, ' ', STR_PAD_LEFT);
+        return "$left$right\n";
+    }
+}
 class ProductController extends Controller
 {
     public function index()
@@ -114,7 +140,7 @@ class ProductController extends Controller
             return redirect('/login');
         } else {
             $total = $request->total_price;
-            return view('checkout', ['total' => $total]);
+            return view('checkout', compact('total'));
         }
     }
     public function checkoutPlace(Request $request)
@@ -125,6 +151,8 @@ class ProductController extends Controller
             $userId = Auth::user()->id;
             $allBuy = Buy::where('user_id', $userId)->get();
             $totalQuantity = Buy::where('user_id', $userId)->sum('quantity');
+            $items = array();
+            $loop = 0;
             foreach ($allBuy as $buy) {
                 $thestock = Product::where('id', $buy['product_id'])->get();
                 if ($thestock[0]->stocks > $buy['quantity']) {
@@ -132,11 +160,22 @@ class ProductController extends Controller
                         'stocks' => $thestock[0]->stocks - $buy['quantity'],
                     ];
                     Product::where('id', $buy['product_id'])->update($data);
+                    $products = Product::where('id', $buy['product_id'])->get();
+                    $productName = $products[0]->name;
+                    $productPrice = $buy['quantity'] * $products[0]->price;
+                    $items[$loop] = new item($productName, $productPrice);
+                    // dd($prices[$loop]);
+                    $loop++;
                     Buy::where('user_id', $userId)->delete();
                 } else {
                     return redirect('/cashier')->with('error', 'The Quantity Exceed Product Stocks');
                 }
             };
+            $connector = new FilePrintConnector("php://stdout");
+            $printer = new Printer($connector);
+            $printer->text("Hello World!\n");
+            $printer->cut();
+            $printer->close();
             $finish = new Finish;
             $finish->user_id = $userId;
             $finish->payment_method = $request->payment;

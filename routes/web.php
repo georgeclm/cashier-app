@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\FinishController;
-
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Validation\Rule;
 
@@ -38,8 +38,6 @@ Route::post("checkout", [ProductController::class, 'checkout']);
 Route::post("checkoutplace", [ProductController::class, 'checkoutPlace']);
 
 Route::get("/history", [FinishController::class, 'index']);
-
-
 
 
 // for the authentication from laravel
