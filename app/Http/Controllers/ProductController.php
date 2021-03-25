@@ -16,7 +16,6 @@ class item
 {
     private $name;
     private $price;
-    private $dollarSign;
 
     public function __construct($name = '', $price = '')
     {
@@ -39,8 +38,9 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $data = Product::all();
-        return view('product', ['products' => $data]);
+        $products = Product::all();
+        $product = $products[0];
+        return view('product', compact('products', 'product'));
     }
     public function create()
     {
@@ -68,29 +68,26 @@ class ProductController extends Controller
             "stocks" => $request->get('stocks'),
             "upc" => $request->get('upc'),
             "gallery" => $request->file('gallery')->hashName(),
-            // "value" => $request->get('price') * $request->get('stocks')
+            "value" => $request->get('price') * $request->get('stocks')
         ]);
         $product->save(); // Finally, save the record.
         return redirect('/')->with('success', 'Success Product Have Been Added');
     }
     public function cashier()
     {
-        if (Auth::guest()) {
-            return redirect('/login');
-        } else {
-            $userId = Auth::user()->id;
-            // this join data from other table to display first is the main table which is buys
-            $products = DB::table('buys')
-                // join this table with products table where the product id is same as product id in buys to take the necessary product only
-                ->join('products', 'buys.product_id', '=', 'products.id')
-                // make sure the user id is the same as user account
-                ->where('buys.user_id', $userId)
-                // take all products in the table, on buys table take buys id as the new name, quantity and the price of product
-                ->select('products.*', 'buys.id as buys_id', 'buys.quantity as buys_quantity', 'buys.price as buys_price')
-                // get function to take all into object and pass to the view
-                ->get();
-            return view('cashier', ['products' => $products]);
-        }
+
+        $userId = auth()->id();
+        // this join data from other table to display first is the main table which is buys
+        $products = DB::table('buys')
+            // join this table with products table where the product id is same as product id in buys to take the necessary product only
+            ->join('products', 'buys.product_id', '=', 'products.id')
+            // make sure the user id is the same as user account
+            ->where('buys.user_id', $userId)
+            // take all products in the table, on buys table take buys id as the new name, quantity and the price of product
+            ->select('products.*', 'buys.id as buys_id', 'buys.quantity as buys_quantity', 'buys.price as buys_price')
+            // get function to take all into object and pass to the view
+            ->get();
+        return view('cashier', compact('products'));
     }
     public function search(Request $request)
     {
@@ -106,28 +103,24 @@ class ProductController extends Controller
     }
     public function addToBuy(Request $request)
     {
-        if (Auth::guest()) {
-            return redirect('/login');
-        } else {
-            // to take the product price as an array of price
-            $productPrice = Product::where('id', $request->livesearch)->get("price");
-            // always die dump data to make sure take the correct data
-            //dd($request);
-            //dd($productPrice[0]->price);
-            // everytime the user hit addtobuy then create new object buy
-            $buy = new Buy;
-            // take the user id from the session
-            $buy->user_id = Auth::user()->id;
-            // from livesearch this take the product id as selected
-            $buy->product_id = $request->livesearch;
-            // quantity from post request
-            $buy->quantity = $request->quantity;
-            // count the price by price x quantity
-            $buy->price = $request->quantity * $productPrice[0]->price;
-            // save to the database buys
-            $buy->save();
-            return redirect('/cashier')->with('success', 'Product Added');
+
+        // to take the product price as an array of price
+        $product = Product::where('id', $request->livesearch)->get();
+        if ($product[0]->stocks < $request->quantity) {
+            return redirect('/cashier')->with('error', 'Quantity exceed product stocks');
         }
+        $buy = new Buy;
+        // take the user id from the session
+        $buy->user_id = Auth::user()->id;
+        // from livesearch this take the product id as selected
+        $buy->product_id = $request->livesearch;
+        // quantity from post request
+        $buy->quantity = $request->quantity;
+        // count the price by price x quantity
+        $buy->price = $request->quantity * $product[0]->price;
+        // save to the database buys
+        $buy->save();
+        return redirect('/cashier')->with('success', 'Product Added');
     }
     public function removeBuy($id)
     {
@@ -136,53 +129,43 @@ class ProductController extends Controller
     }
     public function checkout(Request $request)
     {
-        if (Auth::guest()) {
-            return redirect('/login');
-        } else {
-            $total = $request->total_price;
-            return view('checkout', compact('total'));
-        }
+        $total = $request->total_price;
+        return view('checkout', compact('total'));
     }
     public function checkoutPlace(Request $request)
     {
-        if (Auth::guest()) {
-            return redirect('/login');
-        } else {
-            $userId = Auth::user()->id;
-            $allBuy = Buy::where('user_id', $userId)->get();
-            $totalQuantity = Buy::where('user_id', $userId)->sum('quantity');
-            $items = array();
-            $loop = 0;
-            foreach ($allBuy as $buy) {
-                $thestock = Product::where('id', $buy['product_id'])->get();
-                if ($thestock[0]->stocks > $buy['quantity']) {
-                    $data = [
-                        'stocks' => $thestock[0]->stocks - $buy['quantity'],
-                    ];
-                    Product::where('id', $buy['product_id'])->update($data);
-                    $products = Product::where('id', $buy['product_id'])->get();
-                    $productName = $products[0]->name;
-                    $productPrice = $buy['quantity'] * $products[0]->price;
-                    $items[$loop] = new item($productName, $productPrice);
-                    // dd($prices[$loop]);
-                    $loop++;
-                    Buy::where('user_id', $userId)->delete();
-                } else {
-                    return redirect('/cashier')->with('error', 'The Quantity Exceed Product Stocks');
-                }
-            };
-            $connector = new FilePrintConnector("php://stdout");
-            $printer = new Printer($connector);
-            $printer->text("Hello World!\n");
-            $printer->cut();
-            $printer->close();
-            $finish = new Finish;
-            $finish->user_id = $userId;
-            $finish->payment_method = $request->payment;
-            $finish->total = $request->total;
-            $finish->quantity = $totalQuantity;
-            $finish->save();
-            return redirect('/cashier')->with('success', 'Buy Have Been Placed');
-        }
+
+        $userId = auth()->id();
+        $allBuy = Buy::where('user_id', $userId)->get();
+        $totalQuantity = Buy::where('user_id', $userId)->sum('quantity');
+        $items = array();
+        $loop = 0;
+        foreach ($allBuy as $buy) {
+            $thestock = Product::where('id', $buy['product_id'])->get();
+            $data = [
+                'stocks' => $thestock[0]->stocks - $buy['quantity'],
+                "value" => $thestock[0]->price * ($thestock[0]->stocks - $buy['quantity'])
+            ];
+            Product::where('id', $buy['product_id'])->update($data);
+            $products = Product::where('id', $buy['product_id'])->get();
+            $productName = $products[0]->name;
+            $productPrice = $buy['quantity'] * $products[0]->price;
+            $items[$loop] = new item($productName, $productPrice);
+            // dd($prices[$loop]);
+            $loop++;
+        };
+        Buy::where('user_id', $userId)->delete();
+        $connector = new FilePrintConnector("php://stdout");
+        $printer = new Printer($connector);
+        $printer->text("Hello World!\n");
+        $printer->cut();
+        $printer->close();
+        $finish = new Finish;
+        $finish->user_id = $userId;
+        $finish->payment_method = $request->payment;
+        $finish->total = $request->total;
+        $finish->quantity = $totalQuantity;
+        $finish->save();
+        return redirect('/cashier')->with('success', 'Buy Have Been Placed');
     }
 }

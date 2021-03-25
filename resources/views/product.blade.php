@@ -4,23 +4,7 @@
     and the other --}}
 <?php
 use App\Http\Controllers\FinishController;
-$value = 0;
 $balance = 0;
-$userSales = 0;
-$participation = 0;
-$target = 0;
-$todaySales = 0;
-$totalQuantity = FinishController::totalQuantity();
-$avgQuantity = FinishController::averageQuantity();
-$totalSales = FinishController::totalProfit();
-$todaySales = FinishController::todaySales();
-if (Auth::user()) {
-$userSales = FinishController::userProfit();
-$target = FinishController::targetContribution();
-if ($userSales != 0) {
-$participation = ($userSales / $totalSales) * 100;
-}
-}
 ?>
 @extends('layouts.app')
 
@@ -52,17 +36,17 @@ $participation = ($userSales / $totalSales) * 100;
                             <div class="col mb-4 link-web">
                                 {{-- <a href="detail/{{ $item['id'] }}"> --}}
                                 <div class="card h-100 rounded" style="width: 12rem;">
-                                    <img src="{{ asset("storage/product/{$item['gallery']}") }}" class="card-img-top"
+                                    <img src="{{ asset("storage/product/{$item->gallery}") }}" class="card-img-top"
                                         style="width: 12rem; height: 12rem; background-size: cover; background-position: center;">
                                     <div class="card-body">
-                                        <h6 class="card-title">{{ $item['name'] }}</h6>
-                                        <h5 class="card-text"> Rp. {{ number_format($item['price']) }}</h5>
-                                        <h6 class="card-text">Stock: {{ $item['stocks'] }}</h6>
+
+                                        <h6 class="card-title">{{ $item->name }}</h6>
+                                        <h5 class="card-text"> Rp. {{ number_format($item->price) }}</h5>
+                                        <h6 class="card-text">Stock: {{ $item->stocks }}</h6>
                                     </div>
                                 </div>
                                 {{-- </a> --}}
                             </div>
-                            <input type="hidden" name="" value="{{ $value += $item['price'] * $item['stocks'] }}">
                         @endforeach
                     </div>
                 </div>
@@ -71,28 +55,28 @@ $participation = ($userSales / $totalSales) * 100;
                         <tbody>
                             <tr>
                                 <td>Gross Merchandise Value (GMV)</td>
-                                <td>Rp. {{ number_format($value) }}</td>
+                                <td>Rp. {{ number_format($product->value()) }}</td>
                             </tr>
                             <tr>
                                 <td>Total Sales</td>
-                                <td>Rp. {{ number_format($totalSales) }}</td>
+                                <td>Rp. {{ number_format($product->totalProfit()) }}</td>
                             </tr>
                             <tr>
                                 <td>Today Sales</td>
-                                <td>Rp. {{ number_format($todaySales) }}</td>
+                                <td>Rp. {{ number_format($product->todaySales()) }}</td>
                             </tr>
-                            <input type="hidden" value="{{ $balance = $totalSales - $value }}">
+                            <input type="hidden" value="{{ $balance = $product->totalProfit() - $product->value() }}">
                             <tr>
                                 <td>Balance Sheet</td>
                                 <td>Rp. {{ number_format($balance) }}</td>
                             </tr>
                             <tr>
                                 <td>Total Product Sold</td>
-                                <td>{{ $totalQuantity }}</td>
+                                <td>{{ $product->totalQuantity() }}</td>
                             </tr>
                             <tr>
                                 <td>Average Basket Size</td>
-                                <td>{{ number_format($avgQuantity, 2) }}</td>
+                                <td>{{ number_format($product->averageQuantity(), 2) }}</td>
                             </tr>
 
 
@@ -104,16 +88,16 @@ $participation = ($userSales / $totalSales) * 100;
                             <tbody>
                                 <tr>
                                     <td>Your Sales</td>
-                                    <td>Rp. {{ number_format($userSales) }}</td>
+                                    <td>Rp. {{ number_format($product->userProfit()) }}</td>
                                 </tr>
                                 <tr>
                                     <td>Your Target Contribution</td>
-                                    <td>{{ number_format($target, 2) }} %</td>
+                                    <td>{{ number_format($product->targetContribution(), 2) }} %</td>
                                 </tr>
 
                                 <tr>
                                     <td>Your Contribution</td>
-                                    <td>{{ number_format($participation, 2) }} %</td>
+                                    <td>{{ number_format($product->participation(), 2) }} %</td>
                                 </tr>
 
                             </tbody>

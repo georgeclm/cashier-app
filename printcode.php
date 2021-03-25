@@ -54,7 +54,6 @@ $printer = new Printer($connector);
 /* Print top logo */
 // $printer->setJustification(Printer::JUSTIFY_CENTER);
 // $printer->graphics($logo);
-
 /* Name of shop */
 // $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
 $printer->text(" ExampleMart Ltd.\n");

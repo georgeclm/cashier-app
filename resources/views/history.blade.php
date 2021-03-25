@@ -1,8 +1,3 @@
-<?php
-use App\Http\Controllers\FinishController;
-$value = FinishController::hasFinish();
-$totalSales = FinishController::totalProfit();
-?>
 @extends('layouts.app')
 @section('content')
     @if ($errors->any())
@@ -23,7 +18,7 @@ $totalSales = FinishController::totalProfit();
     <div class="container">
         <div class="col-sm-10">
             <div class="trending-wrapper">
-                @if ($value == 'no')
+                @if ($finishes->count())
                     <h2 class="mb-3">History</h2>
                     <table class="table table-hover">
                         <thead>
@@ -32,8 +27,6 @@ $totalSales = FinishController::totalProfit();
                                 <td>Payment Method</td>
                                 <td>Quantity</td>
                                 <td>Total</td>
-
-
                             </tr>
                         </thead>
                         <tbody>
@@ -50,9 +43,7 @@ $totalSales = FinishController::totalProfit();
                                 <td></td>
                                 <td></td>
                                 <td></td>
-
-                                <td>Rp. {{ number_format($totalSales) }}</td>
-
+                                <td>Rp. {{ number_format($product->totalProfit()) }}</td>
                             </tr>
                         </tbody>
                     </table>
