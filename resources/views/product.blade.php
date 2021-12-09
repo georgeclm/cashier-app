@@ -9,21 +9,6 @@ $balance = 0;
 @extends('layouts.app')
 
 @section('content')
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                <h6>{{ $errors->first() }}</h6>
-            </ul>
-        </div>
-    @endif
-
-    @if (\Session::has('success'))
-        <div class="alert alert-success">
-            <ul>
-                <h6>{!! \Session::get('success') !!}</h6>
-            </ul>
-        </div>
-    @endif
 
     <div class="container mb-5">
         <div class="col-md-12">
@@ -41,7 +26,8 @@ $balance = 0;
                                     <div class="card-body">
 
                                         <h6 class="card-title">{{ $item->name }}</h6>
-                                        <h5 class="card-text"> Rp. {{ number_format($item->price) }}</h5>
+                                        <h5 class="card-text"> Rp. {{ number_format($item->price, 0, ',', '.') }}
+                                        </h5>
                                         <h6 class="card-text">Stock: {{ $item->stocks }}</h6>
                                     </div>
                                 </div>
@@ -55,20 +41,20 @@ $balance = 0;
                         <tbody>
                             <tr>
                                 <td>Gross Merchandise Value (GMV)</td>
-                                <td>Rp. {{ number_format($product->value()) }}</td>
+                                <td>Rp. {{ number_format($product->value(), 0, ',', '.') }}</td>
                             </tr>
                             <tr>
                                 <td>Total Sales</td>
-                                <td>Rp. {{ number_format($product->totalProfit()) }}</td>
+                                <td>Rp. {{ number_format($product->totalProfit(), 0, ',', '.') }}</td>
                             </tr>
                             <tr>
                                 <td>Today Sales</td>
-                                <td>Rp. {{ number_format($product->todaySales()) }}</td>
+                                <td>Rp. {{ number_format($product->todaySales(), 0, ',', '.') }}</td>
                             </tr>
                             <input type="hidden" value="{{ $balance = $product->totalProfit() - $product->value() }}">
                             <tr>
                                 <td>Balance Sheet</td>
-                                <td>Rp. {{ number_format($balance) }}</td>
+                                <td>Rp. {{ number_format($balance, 0, ',', '.') }}</td>
                             </tr>
                             <tr>
                                 <td>Total Product Sold</td>
@@ -76,9 +62,8 @@ $balance = 0;
                             </tr>
                             <tr>
                                 <td>Average Basket Size</td>
-                                <td>{{ number_format($product->averageQuantity(), 2) }}</td>
+                                <td>{{ number_format($product->averageQuantity(), 2, ',', '.') }}</td>
                             </tr>
-
 
                         </tbody>
                     </table>
@@ -88,16 +73,16 @@ $balance = 0;
                             <tbody>
                                 <tr>
                                     <td>Your Sales</td>
-                                    <td>Rp. {{ number_format($product->userProfit()) }}</td>
+                                    <td>Rp. {{ number_format($product->userProfit(), 0, ',', '.') }}</td>
                                 </tr>
                                 <tr>
                                     <td>Your Target Contribution</td>
-                                    <td>{{ number_format($product->targetContribution(), 2) }} %</td>
+                                    <td>{{ number_format($product->targetContribution(), 2, ',', '.') }} %</td>
                                 </tr>
 
                                 <tr>
                                     <td>Your Contribution</td>
-                                    <td>{{ number_format($product->participation(), 2) }} %</td>
+                                    <td>{{ number_format($product->participation(), 2, ',', '.') }} %</td>
                                 </tr>
 
                             </tbody>

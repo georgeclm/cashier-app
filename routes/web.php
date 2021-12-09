@@ -28,12 +28,12 @@ Route::get("/", [ProductController::class, 'index']);
 // set route for add product
 Route::get("/product/create", [ProductController::class, 'create']);
 // set post route to save the product
-Route::post("/product", [ProductController::class, 'store']);
+Route::post("/product", [ProductController::class, 'store'])->name('products.store');
 
 Route::middleware('auth')->group(function () {
 
     // set get route to show the cashier view
-    Route::get("/cashier", [ProductController::class, 'cashier']);
+    Route::get("/cashier", [ProductController::class, 'cashier'])->name('cashier');
     // for the search route from the ajax search script and return the name
     Route::get("/search", [ProductController::class, 'search']);
     // the post from the form to store the name data to the Buy table

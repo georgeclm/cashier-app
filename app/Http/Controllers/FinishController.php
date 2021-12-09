@@ -15,11 +15,9 @@ class FinishController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
-        $product = $products[0];
-        $finishes = DB::table('finishes')
-            ->orderByDesc('created_at')
-            ->get();
-        return view('history', compact('finishes', 'product'));
+        $product = new Product();
+        $totalProfit = $product->totalProfit();
+        $finishes = Finish::latest()->get();
+        return view('history', compact('finishes', 'totalProfit'));
     }
 }

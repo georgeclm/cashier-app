@@ -8,15 +8,15 @@ $tax = $total * 0.1; ?>
                 <tbody>
                     <tr>
                         <td>Amount</td>
-                        <td>Rp. {{ number_format($total) }}</td>
+                        <td>Rp. {{ number_format($total, 0, ',', '.') }}</td>
                     </tr>
                     <tr>
                         <td>Tax (10%)</td>
-                        <td>Rp. {{ number_format($tax) }}</td>
+                        <td>Rp. {{ number_format($tax, 0, ',', '.') }}</td>
                     </tr>
                     <tr>
                         <td>Total amount</td>
-                        <td>Rp. {{ number_format($total + $tax) }}</td>
+                        <td>Rp. {{ number_format($total + $tax, 0, ',', '.') }}</td>
                     </tr>
                 </tbody>
             </table>

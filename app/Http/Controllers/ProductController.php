@@ -38,8 +38,9 @@ class ProductController extends Controller
 {
     public function index()
     {
+        $product = new Product();
         $products = Product::all();
-        $product = $products[0];
+        // $product = $products[0];
         return view('product', compact('products', 'product'));
     }
     public function create()
@@ -48,6 +49,7 @@ class ProductController extends Controller
     }
     public function store(Request $request)
     {
+
         $request->validate([
             'productname' => 'required',
             'category' => 'required',
@@ -61,14 +63,15 @@ class ProductController extends Controller
             ]);
         }
         $request->file('gallery')->store('product', 'public');
+        $price = str_replace('.', '', substr($request->get('price'), 4));
         $product = new Product([
             "name" => $request->get('productname'),
-            "price" => $request->get('price'),
+            "price" => $price,
             "category" => $request->get('category'),
             "stocks" => $request->get('stocks'),
             "upc" => $request->get('upc'),
             "gallery" => $request->file('gallery')->hashName(),
-            "value" => $request->get('price') * $request->get('stocks')
+            "value" => $price * $request->get('stocks')
         ]);
         $product->save(); // Finally, save the record.
         return redirect('/')->with('success', 'Success Product Have Been Added');

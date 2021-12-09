@@ -11,18 +11,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link @if ($home) active @endif"
-                            aria-current="page" href="/">Home</a>
-                    </li>
                     @guest
                     @else
                         <li class="nav-item">
-                            <a class="nav-link @if ($cashier) active @endif"
+                            <a class="nav-link @if (Route::current()->uri == 'cashier') active @endif"
                                 href="/cashier">Cashier</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @if ($history) active @endif"
+                            <a class="nav-link @if (Route::current()->uri == 'history') active @endif"
                                 href="/history">History</a>
                         </li>
                     @endguest

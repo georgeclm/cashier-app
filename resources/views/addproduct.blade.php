@@ -14,39 +14,34 @@
         <div class="row justify-content-center">
             <div class="col-sm-4 col-sm-offset-4">
                 <h4>Add Product</h4>
-                <form action="/product" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Name of Product</label>
-                        <input type="text" name="productname" class="form-control" id="exampleInputEmail1"
-                            aria-describedby="emailHelp" placeholder="Name" required>
+                        <label class="form-label">Name of Product</label>
+                        <input type="text" name="productname" class="form-control" placeholder="Name" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Price of Product</label>
-                        <input type="number" name="price" class="form-control" aria-describedby="emailHelp" required
-                            placeholder="Rp.1,000,000.00">
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Category</label>
-                        <input type="text" name="category" class="form-control" id="exampleInputEmail1"
-                            aria-describedby="emailHelp" placeholder="Category" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Stocks of Product</label>
-                        <input type="number" name="stocks" class="form-control" id="exampleInputEmail1"
-                            aria-describedby="emailHelp" placeholder="0" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">UPC Number of Product</label>
-                        <input type="number" name="upc" class="form-control" id="exampleInputEmail1"
-                            aria-describedby="emailHelp" placeholder="0" required>
+                    <div class="mb-3 ">
+                        <label class="form-label">Price of Product</label>
+                        <input type="text" name="price" class="form-control" type-currency="IDR" inputmode="numeric"
+                            required placeholder="Price">
                     </div>
 
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Product Image</label>
-                        <input type="file" name="gallery" class="form-control" id="exampleInputEmail1"
-                            aria-describedby="emailHelp" required>
+                        <label class="form-label">Category</label>
+                        <input type="text" name="category" class="form-control" placeholder="Category" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Stocks of Product</label>
+                        <input type="number" name="stocks" class="form-control" placeholder="0" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">UPC Number of Product</label>
+                        <input type="number" name="upc" class="form-control" placeholder="0" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Product Image</label>
+                        <input type="file" name="gallery" class="form-control" required>
                     </div>
 
                     <button type="submit" class="btn btn-outline-primary">Add Product</button>

@@ -32,26 +32,26 @@
                         <tbody>
                             @foreach ($finishes as $item)
                                 <tr>
-                                    <td>{{ substr($item->created_at, 0, 10) }}</td>
+                                    <td>{{ $item->created_at->format('l j M, g:i a') }}</td>
                                     <td>{{ $item->payment_method }}</td>
                                     <td>{{ $item->quantity }}</td>
 
-                                    <td>Rp. {{ number_format($item->total) }}</td>
+                                    <td>Rp. {{ number_format($item->total, 0, ',', '.') }}</td>
                                 </tr>
                             @endforeach
                             <tr>
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td>Rp. {{ number_format($product->totalProfit()) }}</td>
+                                <td>Rp. {{ number_format($totalProfit, 0, ',', '.') }}</td>
                             </tr>
                         </tbody>
                     </table>
                 @else
                     <div class="d-grid gap-2 col-5 mx-auto text-center">
                         <br><br>
-                        <h2 class="mb-3 fs-1">Order is empty </h2>
-                        <a class="btn btn-outline-secondary btn-lg" href="/cartlist"> Go to Cart</a>
+                        <h2 class="mb-3 fs-1">History is empty </h2>
+                        <a class="btn btn-outline-secondary btn-lg" href="{{ route('cashier') }}"> Go to Cashier</a>
                     </div>
 
                 @endif

@@ -40,9 +40,9 @@ $total = 0; ?>
                     @foreach ($products as $item)
                         <tr>
                             <td>{{ $item->name }}</td>
-                            <td>Rp. {{ number_format($item->price) }}</td>
+                            <td>Rp. {{ number_format($item->price, 0, ',', '.') }}</td>
                             <td>{{ $item->buys_quantity }}</td>
-                            <td>Rp. {{ number_format($item->buys_price) }}</td>
+                            <td>Rp. {{ number_format($item->buys_price, 0, ',', '.') }}</td>
                             <input type="hidden" name="total_price" value="{{ $total += $item->buys_price }}">
                             <td><a href="/removebuy/{{ $item->buys_id }}" class="btn btn-outline-danger">Remove</a></td>
                         </tr>
@@ -52,7 +52,7 @@ $total = 0; ?>
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td>Rp. {{ number_format($total) }} </td>
+                            <td>Rp. {{ number_format($total, 0, ',', '.') }} </td>
                             <td></td>
                         </tr>
                     @endif
